@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+  
+<!-- Mirrored from functionpage.eu.org/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 20 Aug 2023 18:59:54 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <title>URL Shortener</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="styles.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <center>
+        <h1><a href="index-2.html" style="text-decoration: none; color: #009933; font-family: Arial, sans-serif;">URL Shortener</a></h1>
+      </center>
+      <form id="urlForm">
+        <label for="longUrlInput">Long URL:</label>
+        <input type="text" id="longUrlInput" placeholder="Enter a long URL" required>
+        <center><button type="submit">Shorten</button></center>
+      </form>
+      <div id="shortUrlContainer" class="hidden">
+        <label for="shortUrlInput">Short URL:</label>
+        <div class="short-url-container">
+          <input type="text" id="shortUrlInput" readonly>
+          <button id="copyButton">Copy</button>
+        </div>
+      </div>
+      <div id="errorContainer" class="hidden">
+        <center>
+          <p id="errorMessage" style="color: red;"></p>
+        </center>
+      </div>
+      <div class="social-links">
+        <a href="https://www.facebook.com/rakhib420" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://api.whatsapp.com/send?phone=8801797951359&amp;text=Hello,%20I'm%20interested%20on%20your%20services." target="_blank"><i class="fab fa-whatsapp"></i></a>
+      </div>
+      <center>
+        <p>Last Update: 20 Aug 2023 8:32 PM</p>
+        <span style="background-color:red"><font size="4"><font color="black"><b>&#2476;&#2495;&#2486;&#2503;&#2487; &#2456;&#2507;&#2487;&#2467;&#2494;&#2435;</b></font></font size></span>
+        <marquee bgcolor="orange" direction="left" loop="infinite" width="100%"><font size="4"><font color="black"><b>&#2472;&#2495;&#2480;&#2476;&#2495;&#2458;&#2509;&#2459;&#2495;&#2472;&#2509;&#2472; &#2488;&#2503;&#2476;&#2494; &#2474;&#2503;&#2468;&#2503; &#2472;&#2495;&#2460; &#2470;&#2494;&#2479;&#2492;&#2495;&#2468;&#2509;&#2476;&#2503; &#2474;&#2509;&#2480;&#2468;&#2495; &#2486;&#2497;&#2453;&#2509;&#2480;&#2476;&#2494;&#2480; &#2488;&#2472;&#2509;&#2471;&#2509;&#2479;&#2494;&#2480; &#2478;&#2471;&#2509;&#2479;&#2503; &#2476;&#2453;&#2503;&#2479;&#2492;&#2494; &#2472;&#2495;&#2487;&#2509;&#2474;&#2468;&#2509;&#2468;&#2495; &#2453;&#2480;&#2497;&#2472;&#2404;</b></font></font size></marquee>
+      </center>
+    </div>
+
+    <script>
+      document.getElementById('urlForm').addEventListener('submit', shortenUrl);
+      document.getElementById('copyButton').addEventListener('click', copyUrl);
+
+      var allowedKeywords = [
+        "164761", //Kotubul
+        "177178",
+        "197127",
+        "224002", // biddut
+        "220114",
+        "222617",
+        "176457", // jahirul vai
+        "192517",
+        "171841",
+        "150949",
+        "198016", //imran vasta
+        "199524",
+        "199926", //Asad
+        "197845",
+        "x8EhYy15s3okUA",
+        "raunchygirlrq",
+        "194620", // mofazzal
+        "191712",
+        "198623", // alok
+        "183082", //rishad
+        "199043",
+        "197617", //shohid
+        "153086", // rabbi
+        "165078",
+        "cfcb710f",
+        "175253", // rony
+        "157232",
+        "198013",
+        "189230", // Habib vai
+        "198262",
+        "192703", // Soyon
+        "187524",
+        "197138",
+        "196819",
+        "196423", // Shovon
+        "217421", // moly
+        "173932",
+        "212131",
+        "185667", // Robiul
+        "198774",
+        "214499",
+        "182650", // Robiul white
+        "165080",
+        "197409", // juwel
+        "174216", //Sanjoy
+        "190153", // ATV
+        "191762", // Apurbo
+        "198089", // Rabbani
+        "196804", // Milon
+        "2a6b75ac",
+        "181686", // V1 imran
+        "191813", // mojnu
+        "provokingbellez",
+        "199913",
+        "221329", // Sabuj
+        "115131", //Keli
+        "149173",
+        "220552", // Asadul
+        "199507", // Tahsin
+        "222499",
+        "lustfulmatch1",
+        "208961",
+        "173362", //Shahadat
+        "164235", //prosen jeet
+        "192561", //Akash vai
+      ]; // Add your desired keywords here
+
+      function shortenUrl(event) {
+        event.preventDefault();
+
+        var longUrlInput = document.getElementById('longUrlInput');
+        var shortUrlContainer = document.getElementById('shortUrlContainer');
+        var shortUrlInput = document.getElementById('shortUrlInput');
+        var errorContainer = document.getElementById('errorContainer');
+        var errorMessage = document.getElementById('errorMessage');
+
+        var longUrl = longUrlInput.value;
+
+        var containsKeyword = allowedKeywords.some(keyword => longUrl.includes(keyword));
+
+        if (!containsKeyword) {
+          showError('Your CPA profile is not registered');
+          return;
+        }
+
+        var apiUrl = 'https://cloudfront.ls.us.supporthost.eu/api.php?url=' + encodeURIComponent(longUrl);
+
+        fetch(apiUrl)
+          .then(response => response.json())
+          .then(data => {
+            if (data.shorturl) {
+              var currentDomain = window.location.protocol + '//' + window.location.hostname + '/';
+      var currentDomain2 = 'https://d3prnnpp5ay0jn.cloudfront.net/go.html?uid=';
+      var timestamp = Date.now(); // Get the current timestamp
+      var params = timestamp.toString(); // Convert the timestamp to a string
+      var modifyedUrl = data.shorturl.replace('https://cloudfront.ls.us.supporthost.eu/', currentDomain2);
+      var modifyedUrl2 = modifyedUrl + '_' + params;
+
+              shortUrlInput.value = modifyedUrl2;
+              shortUrlContainer.classList.remove('hidden');
+              errorContainer.classList.add('hidden');
+            } else {
+              showError('Service Stopped - Payment Due.');
+            }
+          })
+          .catch(error => {
+            showError('An error occurred. Please try again.');
+          });
+
+        function showError(message) {
+          errorMessage.textContent = message;
+          errorContainer.classList.remove('hidden');
+          shortUrlContainer.classList.add('hidden');
+        }
+      }
+
+      function copyUrl() {
+        var shortUrlInput = document.getElementById('shortUrlInput');
+
+        shortUrlInput.select();
+        shortUrlInput.setSelectionRange(0, 99999); // For mobile devices
+
+        document.execCommand('copy');
+      }
+    </script>
+  </body>
+
+
+<!-- Mirrored from functionpage.eu.org/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 20 Aug 2023 18:59:56 GMT -->
+</html>
